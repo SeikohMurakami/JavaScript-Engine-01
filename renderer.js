@@ -5,18 +5,8 @@ export class Renderer {
         this.objects = objects;
     }
 
-    drawCircle(circle, strokeColor, fillColor) {
-        this.ctx.beginPath();
-        this.ctx.arc(circle.position.x, circle.position.y, circle.radius, 0, Math.PI*2, true);
-        this.ctx.closePath();
-        if (fillColor) {
-            this.ctx.fillStyle = fillColor;
-            this.ctx.fill();
-        }
-        this.ctx.strokeStyle = strokeColor;
-        this.ctx.lineWidth = 3;
-        this.ctx.stroke();
-    }
+    
+    
     drawRect(rect, strokeColor, fillColor) {    //in () we have the input
         this.ctx.save();            //inside {} we have code we can execute
         this.ctx.translate(rect.position.x, rect.position.y);   //translate the canvas to position of rectangle
@@ -42,7 +32,7 @@ export class Renderer {
 
     drawFrame(objects, fillCol, bordCol) {
         for (let i = 0; i<objects.length; i++) {
-            this.drawCircle(objects[i], bordCol, fillCol);
+            this.drawRect(objects[i], bordCol, fillCol);
         } 
     }
 
