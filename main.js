@@ -1,6 +1,7 @@
 import {Renderer} from './renderer.js';
 import {Circle} from './circle.js';
 import {Input} from './input.js';
+import { rectangle } from './rectangle';
 
 const SMALLEST_RADIUS = 10;
 const dt = 1/60;
@@ -43,7 +44,7 @@ function updateAndDraw() {
     renderer.drawFrame(objects, fillCol, bordCol);
     //draw shape
     if (shapeBeingMade) {
-        renderer.drawCircle(shapeBeingMade, bordCol, null);
+        renderer.drawRect(shapeBeingMade, bordCol, null);
     }
 
 }
