@@ -122,3 +122,43 @@ function addObject(shape) {
     const object = new RigidBody(shape);  
     objects.push(object);
 } 
+
+//test ojects
+const grades = {
+    //key : value ,
+    Math: 95,
+    Science: 93,
+    English: 96,
+    History: 91,
+    averageGrade: function()
+    {
+        return (this.Math + this.Science + this.English + this.History) / 4
+    }
+};
+console.log("My English grade is "+grades.English);
+//JavaScript is case-sensitive
+
+grades.History = 97;
+grades["Science"] = 99;
+console.log(grades);
+console.log(grades.averageGrade());
+
+class studentGrades {
+    constructor(name, m, s, e, h) { //used with key word new
+        this.studentName = name;
+        this.Math = m;
+        this.Science = s;
+        this.English = e;
+        this.History = h;
+    }
+
+    averageGrade () {
+        return (this.Math + this.Science + this.English + this.History) / 4
+    }
+}
+
+const SeikohGrades = new studentGrades ("Seikoh", 95, 96, 94, 98);
+
+SeikohGrades.English = 99;
+
+console.log(SeikohGrades.averageGrade());
