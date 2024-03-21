@@ -22,11 +22,13 @@ export class Collisions {
                     }   //later detect rectangle rectangle here
                     else if (objects[i].shape instanceof Circle && 
                         objects[j].shape instanceof Rect) {
-                            this.findClosestVertex(objects[j].shape.vertices, objects[i].shape.position);
+                            this.detectCollisionCirclePolygon(objects[i],objects[j]);
+                            //this.findClosestVertex(objects[j].shape.vertices, objects[i].shape.position);
                     }
                     else if (objects[i].shape instanceof Rect && 
                         objects[j].shape instanceof Circle) {
-                            this.findClosestVertex(objects[i].shape.vertices, objects[j].shape.position);
+                            this.detectCollisionCirclePolygon(objects[j],objects[i]);
+                           // this.findClosestVertex(objects[i].shape.vertices, objects[j].shape.position);
                     }
                 }
             }
@@ -50,6 +52,9 @@ export class Collisions {
     }
 
     //detect rectangles collisions
+    detectCollisionCirclePolygon (c, p) {
+        //console.log(c, p);
+    }
 
     findClosestVertex (vertices, center) {  //returns the i of the closest of vertices to a center point
         let minDist = Number.MAX_VALUE;
