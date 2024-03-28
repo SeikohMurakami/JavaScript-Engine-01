@@ -125,68 +125,68 @@ function addObject(shape) {
 
 //lesson 9 Debugging
 //1. console
-let a = 5;
-let b = 3;
-let c = "one";
-// console.log(a);
-// console.info(a);
-// console.debug(a);
-// console.warn(a);
-// console.error(a);
+// let a = 5;
+// let b = 3;
+// let c = "one";
+// // console.log(a);
+// // console.info(a);
+// // console.debug(a);
+// // console.warn(a);
+// // console.error(a);
 
-let d = a + b - c;  //a + b - c = NaN (Not a Number)
-    //debugger;
-console.log (d);
+// let d = a + b - c;  //a + b - c = NaN (Not a Number)
+//     //debugger;
+// console.log (d);
 
-var animals = [
-    { animal: 'Horse', name: 'Henry', age: 43 },
-    { animal: 'Dog', name: 'Fred', age: 13 },
-    { animal: 'Cat', name: 'Frodo', age: 18 }
-];
+// var animals = [
+//     { animal: 'Horse', name: 'Henry', age: 43 },
+//     { animal: 'Dog', name: 'Fred', age: 13 },
+//     { animal: 'Cat', name: 'Frodo', age: 18 }
+// ];
  
-console.table(animals);
-///////////
-console.time('Timer1');
+// console.table(animals);
+// ///////////
+// console.time('Timer1');
  
-var items = [];
+// var items = [];
  
-for(var i = 0; i < 100000; i++){
-   items.push({index: i});
-}
+// for(var i = 0; i < 100000; i++){
+//    items.push({index: i});
+// }
  
-console.timeEnd('Timer1');
+// console.timeEnd('Timer1');
 
-//debugging practice
-let computerAndCrewReady = false;
-let fuelReady = false;
+// //debugging practice
+// let computerAndCrewReady = false;
+// let fuelReady = false;
 
-let fuelLevel = 30000;
-let crewStatus = true;
-let computerStatus = 'green';
-
-
-if (fuelLevel >= 20000) {
-   console.log('Fuel level cleared.');
-   let fuelReady = true;
-} else {
-   console.log('WARNING: Insufficient fuel!');
-   let fuelReady = false;
-}
-console.log(computerAndCrewReady);
-
-if (crewStatus && computerStatus === 'green'){
-   console.log('Crew & computer cleared.');
-   computerAndCrewReady = true;
-} else {
-   console.log('WARNING: Crew or computer not ready!');
-   computerAndCrewReady = false;
-}
-console.log(computerAndCrewReady);
+// let fuelLevel = 30000;
+// let crewStatus = true;
+// let computerStatus = 'green';
 
 
-if (computerAndCrewReady && fuelReady) {
-   console.log('10, 9, 8, 7, 6, 5, 4, 3, 2, 1...');
-   console.log('Liftoff!');
-} else {
-   console.log('Launch scrubbed.');
-}
+// if (fuelLevel >= 20000) {
+//    console.log('Fuel level cleared.');
+//    let fuelReady = true;
+// } else {
+//    console.log('WARNING: Insufficient fuel!');
+//    let fuelReady = false;
+// }
+// console.log(computerAndCrewReady);
+
+// if (crewStatus && computerStatus === 'green'){
+//    console.log('Crew & computer cleared.');
+//    computerAndCrewReady = true;
+// } else {
+//    console.log('WARNING: Crew or computer not ready!');
+//    computerAndCrewReady = false;
+// }
+// console.log(computerAndCrewReady);
+
+
+// if (computerAndCrewReady && fuelReady) {
+//    console.log('10, 9, 8, 7, 6, 5, 4, 3, 2, 1...');
+//    console.log('Liftoff!');
+// } else {
+//    console.log('Launch scrubbed.');
+// }
