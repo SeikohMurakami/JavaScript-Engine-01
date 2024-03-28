@@ -123,3 +123,35 @@ function addObject(shape) {
     objects.push(object);
 } 
 
+//lesson 9 Debugging
+//1. console
+let a = 5;
+let b = 3;
+let c = "one";
+// console.log(a);
+// console.info(a);
+// console.debug(a);
+// console.warn(a);
+// console.error(a);
+
+let d = a + b - c;  //a + b - c = NaN (Not a Number)
+    //debugger;
+console.log (d);
+
+var animals = [
+    { animal: 'Horse', name: 'Henry', age: 43 },
+    { animal: 'Dog', name: 'Fred', age: 13 },
+    { animal: 'Cat', name: 'Frodo', age: 18 }
+];
+ 
+console.table(animals);
+
+console.time('Timer1');
+ 
+var items = [];
+ 
+for(var i = 0; i < 100000; i++){
+   items.push({index: i});
+}
+ 
+console.timeEnd('Timer1');
