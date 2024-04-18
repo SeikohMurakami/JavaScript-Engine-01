@@ -25,12 +25,15 @@ inp.resizeCanvas();
 inp.addListeners();
 
 const objects = [];
-addObject(  //ground
+
+//make ground
+addObject(
     new Rect (
         new Vec(canv.width / 2, canv.height), 
         canv.width * 3, 
         canv.height * 0.3
     ),
+    true
 );
 
 let shapeBeingMade = null;
@@ -137,8 +140,8 @@ function moveObjectWithMouse(object) {
     object.velocity.copy(inp.inputs.mouse.velocity);
 }
 
-function addObject(shape) {
-    const object = new RigidBody(shape); 
+function addObject(shape, fixed = false) {
+    const object = new RigidBody(shape, fixed); 
     object.setMass();
     objects.push(object);
 } 

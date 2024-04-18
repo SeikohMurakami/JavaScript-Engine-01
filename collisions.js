@@ -258,8 +258,14 @@ export class Collisions {
     }
 
     pushOffObjects(o1, o2, overlap, normal) {
-        o1.shape.position.subtract(normal.clone().multiply(overlap/2));
-        o2.shape.position.add(normal.clone().multiply(overlap/2));
+        if (o1.isFixed) {
+            o2.shape.position.add(normal.clone().multiply(overlap));
+        } else if (o2.isFixed){
+            o1.shape.position.subtract(normal.clone().multiply(overlap));
+        } else {
+            o1.shape.position.subtract(normal.clone().multiply(overlap/2));
+            o2.shape.position.add(normal.clone().multiply(overlap/2));
+        }
     }
 
     bounceOffObjects(o1, o2, normal) {
