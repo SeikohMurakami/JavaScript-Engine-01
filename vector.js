@@ -20,6 +20,12 @@ export class Vec {
 		return this;
 	}
 
+	zero () {
+		this.x = 0;
+		this.y = 0;
+		return this;
+	}
+
 	add (v) {		//add a vector to this
 		this.x += v.x;
 		this.y += v.y;

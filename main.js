@@ -9,6 +9,7 @@ import { Vec } from './vector.js';
 const WORLD_SIZE = 5000;
 const SMALLEST_RADIUS = 10;
 const dt = 1/60;    //time per frame
+let g;
 
 const canv = document.getElementById("canvas");
 const ctx = canv.getContext("2d");
@@ -91,15 +92,25 @@ function updateAndDraw() {
         moveObjectWithMouse(inp.inputs.mouse.movedObject);
     }
 
-    //Lesson 03 - update object positions with velocity
-    for(let i=0; i<objects.length; i++) {
-        objects[i].updateShape(dt);
+    g = 200;
+    for(let i=1; i<objects.length; i++) {
+        objects[i].acceleration.zero().addY(g);
     }
 
-    //COLLISIONS
-    col.clearCollisions();
-    col.narrowPhaseDetection(objects);  //detect all possible collisions
-    col.resolveCollisionsLinear();    //push off
+    const iterations = 20;
+    for(let i=0; i<iterations; i++) {
+
+        //Lesson 03 - update object positions with velocity
+        for(let i=0; i<objects.length; i++) {
+            objects[i].updateShape(dt/iterations);
+        }
+
+        //COLLISIONS
+        col.clearCollisions();
+        col.narrowPhaseDetection(objects);  //detect all possible collisions
+        col.resolveCollisionsLinear();    //push off
+    
+    }
 
     //remove objects that are too far
     const objectsToRemove = [];
