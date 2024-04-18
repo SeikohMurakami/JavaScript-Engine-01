@@ -4,6 +4,7 @@ import {Rect} from './rect.js';
 import {Input} from './input.js';
 import {RigidBody} from './rigidBody.js';
 import {Collisions} from './collisions.js';
+import { Vec } from './vector.js';
 
 const WORLD_SIZE = 5000;
 const SMALLEST_RADIUS = 10;
@@ -24,6 +25,14 @@ inp.resizeCanvas();
 inp.addListeners();
 
 const objects = [];
+addObject(  //ground
+    new Rect (
+        new Vec(canv.width / 2, canv.height), 
+        canv.width * 3, 
+        canv.height * 0.3
+    ),
+);
+
 let shapeBeingMade = null;
 //button variables
 let shapeSelected = 'r';

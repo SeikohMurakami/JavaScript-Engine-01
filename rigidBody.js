@@ -6,7 +6,7 @@ export class RigidBody {
 		this.shape = shape;   
 		this.velocity = new Vec(0, 0);
 
-		this.angularVelocity = 0.1;
+		this.angularVelocity = 0;
 
 		this.mass;
 		this.inverseMass;
