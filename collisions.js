@@ -5,7 +5,7 @@ import {renderer} from './main.js';
 export class Collisions {
     constructor() {
         this.collisions = [];
-        this.e = 3;   //between 0 and 1
+        this.e = 1;   //between 0 and 1
     }
 
     clearCollisions() {
