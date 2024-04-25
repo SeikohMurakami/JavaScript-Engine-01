@@ -42,6 +42,8 @@ let shapeBeingMade = null;
 //button variables
 let shapeSelected = 'r';
 let gravity = 2;
+let colMode = 2;
+
 const circleButton = document.getElementById("c");
 const rectButton = document.getElementById("r");
 circleButton.onclick = function() {
@@ -60,10 +62,14 @@ const selectGravity = document.getElementById("gravity");
 selectGravity.addEventListener("change", function() {
     gravity = selectGravity.value;
 });
+const selectCollisions = document.getElementById("collisions");
+selectCollisions.addEventListener("change", function() {
+    colMode = selectCollisions.value;
+});
 
 //MAIN LOOP
 function updateAndDraw() {
-
+    //console.log(colMode);
     //make objects
     if (inp.inputs.lclick && shapeBeingMade == null) {
         //lesson 03 - make rectangles with mouse
@@ -129,9 +135,13 @@ function updateAndDraw() {
 
         //COLLISIONS
         col.clearCollisions();
+        if (colMode == 1) {
+            col.narrowPhaseDetection(objects);
+            col.resolveCollisionsPushOff();
+        } else if(colMode == 2) {
         col.narrowPhaseDetection(objects);  //detect all possible collisions
-        col.resolveCollisionsLinear();    //push off
-
+        col.resolveCollisionsBounceOff();    //push off
+        }
     }
 
     //remove objects that are too far
