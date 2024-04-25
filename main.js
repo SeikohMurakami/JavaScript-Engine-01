@@ -141,7 +141,10 @@ function updateAndDraw() {
         } else if(colMode == 2) {
         col.narrowPhaseDetection(objects);  //detect all possible collisions
         col.resolveCollisionsBounceOff();    //push off
-        }
+        } else if(colMode == 3) {
+            col.narrowPhaseDetection(objects);  
+            col.resolveCollisionsBounceAndRotate();
+        }    
     }
 
     //remove objects that are too far
