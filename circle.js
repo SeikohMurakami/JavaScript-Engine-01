@@ -13,6 +13,11 @@ export class Circle {
         return area * density;
     }
 
+    calculateInertia(mass) {
+        let inertia = 0.5 * mass * this.radius * this.radius; //1/2 M R ^2
+        return inertia;
+    }
+
     updateAabb() {
         this.aabb.min = this.position.clone().subtractX(this.radius).subtractY(this.radius);
         this.aabb.max = this.position.clone().addX(this.radius).addY(this.radius);
