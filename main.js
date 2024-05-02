@@ -5,6 +5,7 @@ import {Input} from './input.js';
 import {RigidBody} from './rigidBody.js';
 import {Collisions} from './collisions.js';
 import {Vec} from './vector.js';
+import {Calc} from './calc.js';
 
 const WORLD_SIZE = 5000;
 const SMALLEST_RADIUS = 10;
@@ -19,6 +20,7 @@ const fillCol = "darkGray";
 const bordCol = "black";
 
 const col = new Collisions();
+export const calc = new Calc(); 
 
 //inputs
 const inp = new Input(canv, window, dt);

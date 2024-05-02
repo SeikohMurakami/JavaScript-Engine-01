@@ -7,7 +7,7 @@ export class Rect {
 		this.width = w;
 		this.height = h;
 
-        this.orientation = 0;
+        this.orientation = 0; //Math.PI/2(90degrees) angle radian with x axix
 
         this.vertices = [new Vec(0,0),new Vec(0,0),new Vec(0,0),new Vec(0,0)];
         this.aabb = new Aabb(new Vec(0,0),new Vec(0,0));

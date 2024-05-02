@@ -1,6 +1,7 @@
 import {Circle} from './circle.js';
 import {Rect} from './rect.js';
 import {renderer} from './main.js';
+import {calc} from './main.js';
 
 export class Collisions {
     constructor() {
@@ -224,10 +225,14 @@ export class Collisions {
         
         const normal = this.correctNormalDirection(collisionNormal, o1, o2);
 
+        const point = this.findContactPointPolygons(vertices1, vertices2);
+        renderer.renderedNextFrame.push(point);
+        
         this.collisions.push({
             collidedPair: [o1, o2],
             overlap: smallestOverlap,
             normal: normal,       //direction from o1 to o2, normal points out of o1
+            point: point,
         });
     }
 
@@ -284,8 +289,8 @@ export class Collisions {
             closest = a.clone().add(vAB.clone().multiply(d));
         }
         
-        const distSquared = Math.pow(p.distanceTo(closest), 2);
-        return [closest, distSquared];  //explain next class
+        const dist = p.distanceTo(closest);
+        return [closest, dist];  //explain next class
     }
 
     findContactPointCirclePolygon(circleCenter, polygonVertices) {
@@ -304,6 +309,46 @@ export class Collisions {
         return contact;
     }
 
+    findContactPointPolygons (vertices1, vertices2) {
+        let contact1, contact2, p, v1, v2, minDist;
+        contact2 = null;
+        minDist = Number.MAX_VALUE;
+        for (let i=0; i<vertices1.length; i++) {
+            p = vertices1[i];
+            for (let j=0; j<vertices2.length; j++) {
+                v1 = vertices2[j];
+                v2 = vertices2[(j+1) % vertices2.length];
+                const info = this.findClosestPointSegment(p, v1, v2);
+                if (calc.checkNearlyEqual(info[1], minDist) && !calc.checkNearlyEqualVectors(info[0], contact1)) {
+                    contact2 = info[0];
+                }else if (info[1] < minDist) {
+                    contact1 = info[0];
+                    minDist = info[1];
+                }
+            }
+        }
+
+        for (let i=0; i<vertices2.length; i++) {
+            p = vertices2[i];
+            for (let j=0; j<vertices1.length; j++) {
+                v1 = vertices1[j];
+                v2 = vertices1[(j+1) % vertices1.length];
+                const info = this.findClosestPointSegment(p, v1, v2);
+                if (calc.checkNearlyEqual(info[1], minDist) && !calc.checkNearlyEqualVectors(info[0], contact1)) {
+                    contact2 = info[0];
+                }else if (info[1] < minDist) {
+                    contact1 = info[0];
+                    minDist = info[1];
+                }
+            }
+        }
+
+        if (contact2) {
+            return calc.averageVector([contact1, contact2]);
+        } else {
+            return contact1;
+        }
+    }
 
     pushOffObjects(o1, o2, overlap, normal) {
         if (o1.isFixed) {
@@ -328,26 +373,58 @@ export class Collisions {
         o2.velocity.add(normal.clone().multiply(dv2));
     }
 
-    resolveCollisionsPushOff() {
-        let collidedPair, overlap, normal, o1, o2;
-        for(let i=0; i<this.collisions.length; i++) {
-            ({collidedPair, overlap, normal} = this.collisions[i]);
-            [o1, o2] = collidedPair;
-            this.pushOffObjects(o1, o2, overlap, normal);
-        }
-    }
-
     resolveCollisionsBounceOff() {
         let collidedPair, overlap, normal, o1, o2;
         for(let i=0; i<this.collisions.length; i++) {
             ({collidedPair, overlap, normal} = this.collisions[i]);
             [o1, o2] = collidedPair;
             this.pushOffObjects(o1, o2, overlap, normal);
-            this.bounceOffObjects(o1, o2, normal);
+            this.bounceOffObjects(o1, o2, overlap, normal);
         }
     }
 
     resolveCollisionsBounceAndRotate() {
-        console.log("rotations");
+        let collidedPair, overlap, normal, o1, o2;
+        for(let i=0; i<this.collisions.length; i++) {
+            ({collidedPair, overlap, normal} = this.collisions[i]);
+            [o1, o2] = collidedPair;
+            this.pushOffObjects(o1, o2, overlap, normal);
+            this.bounceAndRotate(o1, o2, normal, point);
+        }
     }
+
+    bounceAndRotate(o1, o2, normal, point) {
+        //linear v from rotation at contact = r vectors from objects to contact points, rotated perp, multiplied by angVel 
+        const r1 = point.clone().subtract(o1.shape.position);
+        const r2 = point.clone().subtract(o2.shape.position);
+
+        const r1Perp = r1.clone().rotateCW90();
+        const r2Perp = r2.clone().rotateCW90();
+        const v1 = r1Perp.clone().multiply(o1.angularVelocity);  
+        const v2 = r2Perp.clone().multiply(o2.angularVelocity);
+
+        //relative vel at contact = relative linear vel + relative rotatonal vel
+        const relativeVelocity = o2.velocity.clone().add(v2).subtract(o1.velocity).subtract(v1);
+        const contactVelocityNormal = relativeVelocity.dot(normal);
+        if (contactVelocityNormal > 0) {
+            return;
+        }
+        const r1PerpDotN = r1Perp.dot(normal);
+        const r2PerpDotN = r2Perp.dot(normal);
+
+        const denom = o1.inverseMass + o2.inverseMass 
+        + r1PerpDotN * r1PerpDotN * o1.inverseInertia 
+        + r2PerpDotN * r2PerpDotN * o2.inverseInertia;
+
+        let j = -(1+this.e) * contactVelocityNormal;
+        j /= denom;
+
+        const impulse = normal.clone().multiply(j);
+
+        o1.velocity.subtract(impulse.clone().multiply(o1.inverseMass));
+        o1.angularVelocity -= r1.cross(impulse) * o1.inverseInertia;
+        o2.velocity.add(impulse.clone().multiply(o2.inverseMass));
+        o2.angularVelocity += r2.cross(impulse) * o2.inverseInertia;
+    }
+    
 }
