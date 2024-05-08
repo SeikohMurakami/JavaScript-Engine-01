@@ -166,6 +166,26 @@ function updateAndDraw() {
     if (shapeBeingMade) {
         shapeBeingMade.draw(ctx, bordCol, null);
     }
+
+    //Spring
+    class Spring {
+        constructor(k, restLength, object1, object2) {
+            this.k = k;
+            this.restLength = restLength;
+            this.object1 = object1;
+            this.object2 = object2;
+        }
+        draw(context) {
+            context.beginPath();
+            context.moveTo(50, 50);
+            context.lineTo(50, 50);
+            context.stroke();
+        }
+    
+        addForce() {
+            // code to add spring force
+        }
+    }
 }
 let renderInterval = setInterval(updateAndDraw, 1000 / 60);
 
