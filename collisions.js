@@ -48,7 +48,7 @@ export class Collisions {
             //unit vector from s1 to s2
             const normal = s2.position.clone().subtract(s1.position).normalize();   //unit vector(direction) normal(perpendicular) to contact surface
             const point = s1.position.clone().add(normal.clone().multiply(s1.radius-overlap/2));
-            renderer.renderedNextFrame.push(point);
+            //renderer.renderedNextFrame.push(point);
             
             this.collisions.push({  //object
                 collidedPair: [o1, o2], //[array]
@@ -226,7 +226,7 @@ export class Collisions {
         const normal = this.correctNormalDirection(collisionNormal, o1, o2);
 
         const point = this.findContactPointPolygons(vertices1, vertices2);
-        renderer.renderedNextFrame.push(point);
+        //renderer.renderedNextFrame.push(point);
 
         this.collisions.push({
             collidedPair: [o1, o2],
@@ -305,7 +305,7 @@ export class Collisions {
                 shortestDist = info[1];
             }
         }
-        renderer.renderedNextFrame.push(contact);
+        //renderer.renderedNextFrame.push(contact);
         return contact;
     }
 
