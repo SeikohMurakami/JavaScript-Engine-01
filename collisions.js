@@ -436,4 +436,45 @@ export class Collisions {
         o2.velocity.add(impulse.clone().multiply(o2.inverseMass));
         o2.angularVelocity += r2.cross(impulse) * o2.inverseInertia;
     }
+    
+    addFriction(o1, o2, normal, point, j) {
+        //linear v from rotation at contact = r vectors from objects to contact points, rotated perp, multiplied by angVel 
+        const r1 = point.clone().subtract(o1.shape.position);
+        const r2 = point.clone().subtract(o2.shape.position);
+        const r1Perp = r1.clone().rotateCW90();
+        const r2Perp = r2.clone().rotateCW90();
+        const v1 = r1Perp.clone().multiply(o1.angularVelocity);  
+        const v2 = r2Perp.clone().multiply(o2.angularVelocity);
+
+        const relativeVelocity = o2.velocity.clone().add(v2).subtract(o1.velocity).subtract(v1);
+        
+        const tangentVelocity = relativeVelocity.clone().subtract(normal.clone().multiply(relativeVelocity.dot(normal)));
+        if (tangentVelocity.checkNearlyZero()) {
+            return;
+        }
+        const tangent = tangentVelocity.normalize();
+        
+        const r1PerpDotT = r1Perp.dot(tangent);
+        const r2PerpDotT = r2Perp.dot(tangent);
+
+        const denom = o1.inverseMass + o2.inverseMass 
+        + r1PerpDotT * r1PerpDotT * o1.inverseInertia 
+        + r2PerpDotT * r2PerpDotT * o2.inverseInertia;
+
+        let jt = -relativeVelocity.dot(tangent);
+        jt /= denom;
+
+        //Coloumb's law
+        let frictionImpulse;
+        if (Math.abs(jt) <= j * this.sf) {
+            frictionImpulse = tangent.clone().multiply(jt);
+        } else {
+            frictionImpulse = tangent.clone().multiply(-j * this.kf);
+        }
+        
+        o1.velocity.subtract(frictionImpulse.clone().multiply(o1.inverseMass));
+        o1.angularVelocity -= r1.cross(frictionImpulse) * o1.inverseInertia;
+        o2.velocity.add(frictionImpulse.clone().multiply(o2.inverseMass));
+        o2.angularVelocity += r2.cross(frictionImpulse) * o2.inverseInertia;
+    }
 }
