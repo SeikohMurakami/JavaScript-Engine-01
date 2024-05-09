@@ -232,4 +232,3 @@ function setButtonBold(btn, bool){
         btn.style.fontWeight =  '400';
     }
 }
-
