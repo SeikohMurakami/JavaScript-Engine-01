@@ -148,6 +148,10 @@ export class Vec {
 		return (this.x * v.y) - (this.y * v.x);
 	}
 
+	checkNearlyZero () {
+		return this.magnitude() < 0.05;
+	}
+
 	draw (ctx, strokeColor) {
 		if (this.color) {
 			strokeColor = this.color;

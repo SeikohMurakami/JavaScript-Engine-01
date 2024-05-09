@@ -7,6 +7,8 @@ export class Collisions {
     constructor() {
         this.collisions = [];
         this.e = 0.5;   //between 0 and 1
+        this.kf = 0.5;  //friction
+        this.sf = 0.8   //friction, has to be more than kf
     }
 
     clearCollisions() {
@@ -392,13 +394,16 @@ export class Collisions {
         }
     }
 
-    resolveCollisionsBounceAndRotate() {
-        let collidedPair, overlap, normal, o1, o2, point;
+    resolveCollisionsBounceAndRotate(friction) {
+        let collidedPair, overlap, normal, o1, o2, point, j;
         for(let i=0; i<this.collisions.length; i++) {
             ({collidedPair, overlap, normal, point} = this.collisions[i]);
             [o1, o2] = collidedPair;
             this.pushOffObjects(o1, o2, overlap, normal);
-            this.bounceAndRotate(o1, o2, normal, point);
+            j = this.bounceAndRotate(o1, o2, normal, point);
+            if (friction) {
+                this.addFriction(o1, o2, normal, point, j);
+            }
         }
     }
 
@@ -435,8 +440,10 @@ export class Collisions {
         o1.angularVelocity -= r1.cross(impulse) * o1.inverseInertia;
         o2.velocity.add(impulse.clone().multiply(o2.inverseMass));
         o2.angularVelocity += r2.cross(impulse) * o2.inverseInertia;
-    }
     
+        return j;
+    }
+
     addFriction(o1, o2, normal, point, j) {
         //linear v from rotation at contact = r vectors from objects to contact points, rotated perp, multiplied by angVel 
         const r1 = point.clone().subtract(o1.shape.position);
