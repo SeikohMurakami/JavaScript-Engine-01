@@ -44,7 +44,7 @@ let shapeBeingMade = null;
 //button variables
 let shapeSelected = 'r';
 let gravity = 2;
-let colMode = 2;
+let colMode = 3;
 
 const circleButton = document.getElementById("c");
 const rectButton = document.getElementById("r");
