@@ -421,7 +421,7 @@ export class Collisions {
         const relativeVelocity = o2.velocity.clone().add(v2).subtract(o1.velocity).subtract(v1);
         const contactVelocityNormal = relativeVelocity.dot(normal);
         if (contactVelocityNormal > 0) {
-            return;
+            return 0;
         }
         
         const r1PerpDotN = r1Perp.dot(normal);
